@@ -218,10 +218,9 @@
         }
         
         .letterhead-header {
-            padding: 30px;
+            padding: 20px 30px; /* Reduced from 30px */
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-bottom: 1px solid #e9ecef;
-            min-height: 140px;
+            min-height: 120px; /* Reduced from 140px */
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -299,15 +298,15 @@
         
         .letterhead-date-section {
             position: absolute;
-            top: 180px;
+            top: 160px; /* Reduced from 180px */
             right: 30px;
             font-size: 12px;
             color: #34495e;
         }
         
         .letterhead-body {
-            padding: 30px;
-            min-height: 400px;
+            padding: 20px 30px; /* Reduced from 30px */
+            min-height: 450px; /* Increased to compensate for reduced margins */
         }
         
         .letterhead-body h2 {
@@ -327,7 +326,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 20px 30px;
+            padding: 15px 30px; /* Reduced from 20px */
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-top: 1px solid #e9ecef;
             display: flex;
@@ -688,7 +687,7 @@
                 <div class="info-section">
                     <h3>💡 ISO Standards Compliance</h3>
                     <p>• A4 paper size: 210mm × 297mm</p>
-                    <p>• Proper margins: 25mm top/bottom, 20mm left/right</p>
+                    <p>• Reduced margins: 12.5mm top/bottom, 10mm left/right</p>
                     <p>• Professional typography hierarchy</p>
                     <p>• Consistent branding elements</p>
                     <p>• Print-ready CMYK-friendly colors</p>
@@ -974,10 +973,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             // A4 dimensions: 210mm × 297mm
             const pageWidth = 210;
             const pageHeight = 297;
-            const marginTop = 25;
-            const marginBottom = 25;
-            const marginLeft = 20;
-            const marginRight = 20;
+            const marginTop = 12.5; // Reduced from 25mm
+            const marginBottom = 12.5; // Reduced from 25mm
+            const marginLeft = 10; // Reduced from 20mm
+            const marginRight = 10; // Reduced from 20mm
             const contentWidth = pageWidth - marginLeft - marginRight;
 
             // Colors (CMYK-friendly)
@@ -1028,12 +1027,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                 }
             }
 
-            // Generate letterhead based on template
+            // Generate letterhead based on template - WITHOUT TOP LINE
             switch(currentTemplate) {
                 case 'modern':
-                    // Modern template
-                    pdf.setFillColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
-                    pdf.rect(marginLeft, marginTop - 10, contentWidth, 0.5, 'F');
+                    // Modern template - NO TOP LINE
                     
                     // Logo
                     if (companyLogo) {
@@ -1101,9 +1098,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     break;
                     
                 case 'classic':
-                    // Classic centered template
-                    pdf.setFillColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
-                    pdf.rect(marginLeft, marginTop - 10, contentWidth, 0.3, 'F');
+                    // Classic centered template - NO TOP LINE
                     
                     // Centered layout
                     const centerX = pageWidth / 2;
@@ -1158,7 +1153,9 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     break;
                     
                 case 'corporate':
-                    // Corporate colored header
+                    // Corporate colored header - NO TOP LINE
+                    
+                    // Colored header background
                     pdf.setFillColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
                     pdf.rect(marginLeft, marginTop - 15, contentWidth, 25, 'F');
                     
@@ -1225,7 +1222,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                 pdf.setFontSize(11);
                 pdf.setTextColor(0, 0, 0);
                 const lines = letterContent.split('\n');
-                let contentY = marginTop + 60;
+                let contentY = marginTop + 45; // Adjusted for reduced margins
                 lines.forEach((line, index) => {
                     if (line.trim()) {
                         pdf.text(line, marginLeft, contentY);
