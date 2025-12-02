@@ -218,9 +218,9 @@
         }
         
         .letterhead-header {
-            padding: 20px 30px; /* Reduced from 30px */
+            padding: 20px 30px;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            min-height: 120px; /* Reduced from 140px */
+            min-height: 120px;
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -269,44 +269,17 @@
             margin-bottom: 15px;
         }
         
-        .letterhead-address {
-            font-size: 12px;
-            color: #34495e;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
-        
-        .letterhead-contact {
-            font-size: 12px;
-            color: #34495e;
-            line-height: 1.4;
-        }
-        
-        .letterhead-contact-item {
-            margin-bottom: 3px;
-        }
-        
-        .letterhead-extra {
-            text-align: right;
-            font-size: 11px;
-            color: #7f8c8d;
-        }
-        
-        .letterhead-extra-item {
-            margin-bottom: 3px;
-        }
-        
         .letterhead-date-section {
             position: absolute;
-            top: 160px; /* Reduced from 180px */
+            top: 160px;
             right: 30px;
             font-size: 12px;
             color: #34495e;
         }
         
         .letterhead-body {
-            padding: 20px 30px; /* Reduced from 30px */
-            min-height: 450px; /* Increased to compensate for reduced margins */
+            padding: 20px 30px;
+            min-height: 450px;
         }
         
         .letterhead-body h2 {
@@ -326,7 +299,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 15px 30px; /* Reduced from 20px */
+            padding: 15px 30px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-top: 1px solid #e9ecef;
             display: flex;
@@ -343,6 +316,17 @@
             font-size: 11px;
             color: #3498db;
             font-weight: 600;
+        }
+        
+        .letterhead-contact-info {
+            text-align: left;
+            font-size: 11px;
+            color: #34495e;
+            line-height: 1.4;
+        }
+        
+        .letterhead-contact-item {
+            margin-bottom: 3px;
         }
         
         .custom-text-section {
@@ -688,8 +672,8 @@
                     <h3>💡 ISO Standards Compliance</h3>
                     <p>• A4 paper size: 210mm × 297mm</p>
                     <p>• Reduced margins: 12.5mm top/bottom, 10mm left/right</p>
+                    <p>• Contact info moved to footer for clean header</p>
                     <p>• Professional typography hierarchy</p>
-                    <p>• Consistent branding elements</p>
                     <p>• Print-ready CMYK-friendly colors</p>
                 </div>
             </div>
@@ -820,18 +804,11 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 <div class="letterhead-company-info">
                                     <div class="letterhead-company-name" style="color: ${primaryColor};">${companyName}</div>
                                     <div class="letterhead-tagline">${tagline}</div>
-                                    ${address ? `<div class="letterhead-address">${address.replace(/\n/g, '<br>')}</div>` : ''}
-                                    ${phone || email ? `<div class="letterhead-contact">
-                                        ${phone ? `<div class="letterhead-contact-item">${phone}</div>` : ''}
-                                        ${email ? `<div class="letterhead-contact-item">${email}</div>` : ''}
-                                        ${website ? `<div class="letterhead-contact-item">${website}</div>` : ''}
-                                    </div>` : ''}
                                 </div>
                             </div>
                             <div class="letterhead-extra">
                                 ${registration ? `<div class="letterhead-extra-item">Reg: ${registration}</div>` : ''}
                                 ${tax ? `<div class="letterhead-extra-item">VAT: ${tax}</div>` : ''}
-                                ${website ? `<div class="letterhead-extra-item" style="color: ${secondaryColor};">${website}</div>` : ''}
                             </div>
                         </div>
                     `;
@@ -844,17 +821,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 ${companyLogo ? `<div class="letterhead-logo" style="margin: 0 auto 15px;"><img src="${companyLogo}" alt="Company Logo"></div>` : ''}
                                 <div class="letterhead-company-name" style="color: ${primaryColor}; font-size: 28px;">${companyName}</div>
                                 <div class="letterhead-tagline">${tagline}</div>
-                                ${address || phone || email ? `<div style="margin-top: 20px; font-size: 12px; color: #34495e;">
-                                    ${address ? `<div>${address.replace(/\n/g, ' | ')}</div>` : ''}
-                                    <div style="margin-top: 8px;">
-                                        ${phone ? `${phone}` : ''}${phone && email ? ' | ' : ''}${email ? `${email}` : ''}
-                                        ${website ? ` | ${website}` : ''}
-                                    </div>
-                                    ${registration || tax ? `<div style="margin-top: 8px; color: ${secondaryColor};">
-                                        ${registration ? `Reg: ${registration}` : ''}
-                                        ${registration && tax ? ' | ' : ''}
-                                        ${tax ? `VAT: ${tax}` : ''}
-                                    </div>` : ''}
+                                ${registration || tax ? `<div style="margin-top: 8px; color: ${secondaryColor};">
+                                    ${registration ? `Reg: ${registration}` : ''}
+                                    ${registration && tax ? ' | ' : ''}
+                                    ${tax ? `VAT: ${tax}` : ''}
                                 </div>` : ''}
                             </div>
                         </div>
@@ -874,15 +844,11 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 </div>
                             </div>
                         </div>
-                        ${address || phone || email || website ? `<div style="padding: 15px 30px; background: ${primaryColor}08; border-bottom: 1px solid ${primaryColor}20;">
+                        ${registration || tax ? `<div style="padding: 15px 30px; background: ${primaryColor}08; border-bottom: 1px solid ${primaryColor}20;">
                             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #34495e;">
-                                <div>
-                                    ${address ? `<div>${address.replace(/\n/g, ' | ')}</div>` : ''}
-                                    ${phone || email ? `<div style="margin-top: 5px;">${phone ? `${phone}` : ''}${phone && email ? ' | ' : ''}${email ? `${email}` : ''}</div>` : ''}
-                                </div>
+                                <div></div>
                                 <div style="text-align: right;">
-                                    ${website ? `<div>${website}</div>` : ''}
-                                    ${registration ? `<div style="margin-top: 5px;">Reg: ${registration}</div>` : ''}
+                                    ${registration ? `<div>Reg: ${registration}</div>` : ''}
                                     ${tax ? `<div style="margin-top: 5px;">VAT: ${tax}</div>` : ''}
                                 </div>
                             </div>
@@ -923,14 +889,33 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                 `;
             }
 
-            // Add footer
+            // Add footer with contact information
+            let footerContactHTML = '';
+            if (address || phone || email || website) {
+                footerContactHTML = `
+                    <div class="letterhead-contact-info">
+                        ${address ? `<div class="letterhead-contact-item">${address.replace(/\n/g, ' | ')}</div>` : ''}
+                        ${phone || email || website ? `
+                            <div class="letterhead-contact-item">
+                                ${phone ? `${phone}` : ''}
+                                ${phone && email ? ' | ' : ''}
+                                ${email ? `${email}` : ''}
+                                ${(phone || email) && website ? ' | ' : ''}
+                                ${website ? `${website}` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
             previewHTML += `
                 <div class="letterhead-footer" style="background: linear-gradient(135deg, ${primaryColor}08 0%, #f8f9fa 100%);">
+                    ${footerContactHTML}
                     <div class="letterhead-footer-text">
                         ${showPageNumbers ? 'Page 1 of 1' : ''}
                     </div>
                     <div class="letterhead-footer-website" style="color: ${secondaryColor};">
-                        ${website || 'www.yourcompany.com'}
+                        ${companyName}
                     </div>
                 </div>
             `;
@@ -1027,10 +1012,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                 }
             }
 
-            // Generate letterhead based on template - WITHOUT TOP LINE
+            // Generate letterhead based on template - CONTACT INFO MOVED TO FOOTER
             switch(currentTemplate) {
                 case 'modern':
-                    // Modern template - NO TOP LINE
+                    // Modern template - NO CONTACT INFO IN HEADER
                     
                     // Logo
                     if (companyLogo) {
@@ -1041,7 +1026,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         }
                     }
                     
-                    // Company info
+                    // Company info (name and tagline only)
                     pdf.setFontSize(16);
                     pdf.setTextColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
                     pdf.setFont(undefined, 'bold');
@@ -1052,53 +1037,15 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.setTextColor(100, 100, 100);
                     pdf.text(tagline, marginLeft + (companyLogo ? 30 : 0), marginTop + 10);
                     
-                    // Optional fields
-                    if (address) {
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(50, 50, 50);
-                        let contactY = marginTop + 18;
-                        const addressLines = pdf.splitTextToSize(address, contentWidth - 100);
-                        addressLines.forEach(line => {
-                            pdf.text(line, marginLeft + (companyLogo ? 30 : 0), contactY);
-                            contactY += 4;
-                        });
-                    }
-                    
-                    if (phone) {
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(50, 50, 50);
-                        let phoneY = address ? marginTop + 18 + (address.split('\n').length * 4) + 2 : marginTop + 18;
-                        pdf.text(phone, marginLeft + (companyLogo ? 30 : 0), phoneY);
-                    }
-                    
-                    if (email) {
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(50, 50, 50);
-                        let emailY = marginTop + (address ? 18 + (address.split('\n').length * 4) + (phone ? 6 : 2) : 18);
-                        if (phone) emailY += 4;
-                        pdf.text(email, marginLeft + (companyLogo ? 30 : 0), emailY);
-                    }
-                    
-                    if (website) {
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(50, 50, 50);
-                        let websiteY = marginTop + 18 + (address ? (address.split('\n').length * 4) : 0) + (phone ? 4 : 0) + (email ? 4 : 0);
-                        pdf.text(website, marginLeft + (companyLogo ? 30 : 0), websiteY);
-                    }
-                    
-                    // Right side info (optional)
+                    // Registration/Tax info (only if provided)
                     const rightX = marginLeft + contentWidth - 50;
                     pdf.setFontSize(8);
                     if (registration) pdf.text(`Reg: ${registration}`, rightX, marginTop + 5);
                     if (tax) pdf.text(`VAT: ${tax}`, rightX, marginTop + 10);
-                    if (website) {
-                        pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
-                        pdf.text(website, rightX, marginTop + 15);
-                    }
                     break;
                     
                 case 'classic':
-                    // Classic centered template - NO TOP LINE
+                    // Classic centered template - NO CONTACT INFO IN HEADER
                     
                     // Centered layout
                     const centerX = pageWidth / 2;
@@ -1123,37 +1070,19 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     const taglineWidth = pdf.getTextWidth(tagline);
                     pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
                     
-                    // Optional contact info
-                    if (address || phone || email) {
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(50, 50, 50);
-                        let infoY = marginTop + 40;
-                        
-                        if (address) {
-                            const addressWidth = pdf.getTextWidth(address.replace(/\n/g, ' | '));
-                            pdf.text(address.replace(/\n/g, ' | '), centerX - addressWidth / 2, infoY);
-                            infoY += 5;
-                        }
-                        
-                        const contactText = `${phone ? phone : ''}${phone && email ? ' | ' : ''}${email ? email : ''}${(phone || email) && website ? ` | ${website}` : ''}`;
-                        if (contactText.trim()) {
-                            const contactWidth = pdf.getTextWidth(contactText);
-                            pdf.text(contactText, centerX - contactWidth / 2, infoY);
-                        }
-                        
-                        if (registration || tax) {
-                            const regText = `${registration ? `Reg: ${registration}` : ''}${registration && tax ? ' | ' : ''}${tax ? `VAT: ${tax}` : ''}`;
-                            if (regText.trim()) {
-                                const regWidth = pdf.getTextWidth(regText);
-                                pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
-                                pdf.text(regText, centerX - regWidth / 2, infoY + 5);
-                            }
+                    // Registration/Tax info (only if provided)
+                    if (registration || tax) {
+                        const regText = `${registration ? `Reg: ${registration}` : ''}${registration && tax ? ' | ' : ''}${tax ? `VAT: ${tax}` : ''}`;
+                        if (regText.trim()) {
+                            const regWidth = pdf.getTextWidth(regText);
+                            pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
+                            pdf.text(regText, centerX - regWidth / 2, marginTop + 40);
                         }
                     }
                     break;
                     
                 case 'corporate':
-                    // Corporate colored header - NO TOP LINE
+                    // Corporate colored header - NO CONTACT INFO IN HEADER
                     
                     // Colored header background
                     pdf.setFillColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
@@ -1178,51 +1107,54 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         }
                     }
                     
-                    // Secondary info bar (with optional info)
-                    pdf.setFillColor(secondaryCMYK.c * 50, secondaryCMYK.m * 50, secondaryCMYK.y * 50, secondaryCMYK.k * 50);
-                    pdf.rect(marginLeft, marginTop + 12, contentWidth, 12, 'F');
-                    
-                    pdf.setFontSize(8);
-                    pdf.setTextColor(50, 50, 50);
-                    
-                    let leftInfoY = marginTop + 17;
-                    if (address) {
-                        pdf.text(address.replace(/\n/g, ' | '), marginLeft, leftInfoY);
-                        leftInfoY += 4;
+                    // Registration/Tax info bar (only if provided)
+                    if (registration || tax) {
+                        pdf.setFillColor(secondaryCMYK.c * 50, secondaryCMYK.m * 50, secondaryCMYK.y * 50, secondaryCMYK.k * 50);
+                        pdf.rect(marginLeft, marginTop + 12, contentWidth, 12, 'F');
+                        
+                        pdf.setFontSize(8);
+                        pdf.setTextColor(50, 50, 50);
+                        const rightInfoX = marginLeft + contentWidth - 60;
+                        if (registration) pdf.text(`Reg: ${registration}`, rightInfoX, marginTop + 17);
+                        if (tax) pdf.text(`VAT: ${tax}`, rightInfoX, marginTop + 21);
                     }
-                    if (phone || email) {
-                        const contactText = `${phone ? phone : ''}${phone && email ? ' | ' : ''}${email ? email : ''}`;
-                        if (contactText.trim()) {
-                            pdf.text(contactText, marginLeft, leftInfoY);
-                        }
-                    }
-                    
-                    const rightInfoX = marginLeft + contentWidth - 60;
-                    if (website) pdf.text(website, rightInfoX, marginTop + 17);
-                    if (registration) pdf.text(`Reg: ${registration}`, rightInfoX, marginTop + 21);
                     break;
             }
 
-            // Footer
+            // Footer with contact information
             pdf.setFillColor(240, 240, 240);
-            pdf.rect(marginLeft, pageHeight - marginBottom - 8, contentWidth, 8, 'F');
+            pdf.rect(marginLeft, pageHeight - marginBottom - 25, contentWidth, 25, 'F');
             
+            pdf.setFontSize(9);
+            pdf.setTextColor(50, 50, 50);
+            
+            // Contact information in footer
+            let footerY = pageHeight - marginBottom - 20;
+            let footerInfo = [];
+            if (address) footerInfo.push(address.replace(/\n/g, ' | '));
+            if (phone) footerInfo.push(phone);
+            if (email) footerInfo.push(email);
+            if (website) footerInfo.push(website);
+            
+            if (footerInfo.length > 0) {
+                const contactText = footerInfo.join(' | ');
+                pdf.text(contactText, marginLeft, footerY);
+            }
+            
+            // Page numbers and company name
             pdf.setFontSize(8);
             pdf.setTextColor(100, 100, 100);
             if (showPageNumbers) {
-                pdf.text('Page 1 of 1', marginLeft, pageHeight - marginBottom - 3);
+                pdf.text('Page 1 of 1', marginLeft, pageHeight - marginBottom - 8);
             }
-            if (website) {
-                pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
-                pdf.text(website, marginLeft + contentWidth - pdf.getTextWidth(website), pageHeight - marginBottom - 3);
-            }
+            pdf.text(companyName, marginLeft + contentWidth - pdf.getTextWidth(companyName), pageHeight - marginBottom - 8);
 
             // Add letter content
             if (letterContent) {
                 pdf.setFontSize(11);
                 pdf.setTextColor(0, 0, 0);
                 const lines = letterContent.split('\n');
-                let contentY = marginTop + 45; // Adjusted for reduced margins
+                let contentY = marginTop + 35; // Adjusted for reduced margins
                 lines.forEach((line, index) => {
                     if (line.trim()) {
                         pdf.text(line, marginLeft, contentY);
