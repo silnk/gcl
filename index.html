@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Company Letterhead Generator</title>
+    <title>Professional Multilingual Letterhead Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -11,6 +11,23 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Multilingual Font Support */
+        .arabic {
+            font-family: 'Arial', 'Tahoma', 'Noto Kufi Arabic', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .urdu {
+            font-family: 'Jameel Noori Nastaleeq', 'Nafees Nastaleeq', 'Noto Nastaliq Urdu', serif;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .hindi {
+            font-family: 'Mangal', 'Noto Sans Devanagari', 'Kruti Dev', sans-serif;
         }
         
         body {
@@ -323,10 +340,56 @@
             font-size: 11px;
             color: #34495e;
             line-height: 1.4;
+            max-width: 70%;
         }
         
         .letterhead-contact-item {
             margin-bottom: 3px;
+        }
+        
+        /* Language-specific styles */
+        .arabic, .urdu {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .hindi {
+            font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;
+        }
+        
+        .arabic {
+            font-family: 'Noto Kufi Arabic', 'Tahoma', sans-serif;
+        }
+        
+        .urdu {
+            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
+        }
+        
+        .language-selector {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn:hover {
+            border-color: #3498db;
+        }
+        
+        .lang-btn.active {
+            border-color: #3498db;
+            background: #e8f4fc;
+            color: #2c3e50;
         }
         
         .custom-text-section {
@@ -500,33 +563,48 @@
             .text-option-group {
                 flex-direction: column;
             }
+            
+            .language-selector {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Professional Company Letterhead Generator</h1>
-            <div class="subtitle">Create ISO-standard business letterheads with your company branding</div>
+            <h1>Professional Multilingual Letterhead Generator</h1>
+            <div class="subtitle">Create ISO-standard business letterheads in Arabic, Urdu, Hindi & English</div>
         </header>
         
         <div class="content">
             <div class="form-section">
                 <div class="info-section">
-                    <h3>📋 ISO 269 & International Standards</h3>
-                    <p>This generator follows ISO 269 paper standards and international business letterhead conventions.</p>
-                    <p>Paper size: A4 (210mm × 297mm) with proper margins and professional layout.</p>
+                    <h3>🌍 Multilingual Support</h3>
+                    <p>Supports Arabic, Urdu, Hindi, and English with proper RTL text direction.</p>
+                    <p>ISO 269 A4 standard with professional typography for all languages.</p>
+                </div>
+                
+                <!-- Language Selector -->
+                <div class="form-group">
+                    <label>Select Language</label>
+                    <div class="language-selector">
+                        <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">🇺🇸 English</button>
+                        <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">🇸🇦 العربية</button>
+                        <button class="lang-btn" data-lang="ur" onclick="setLanguage('ur')">🇵🇰 اردو</button>
+                        <button class="lang-btn" data-lang="hi" onclick="setLanguage('hi')">🇮🇳 हिन्दी</button>
+                    </div>
                 </div>
                 
                 <!-- Required Fields - Company Name and Slogan -->
                 <div class="form-group required">
-                    <label for="companyNameInput">Company Name *</label>
-                    <input type="text" id="companyNameInput" placeholder="Enter your company name">
+                    <label id="companyNameLabel">Company Name *</label>
+                    <input type="text" id="companyNameInput" placeholder="Enter your company name" class="">
                 </div>
                 
                 <div class="form-group required">
-                    <label for="taglineInput">Company Tagline/Slogan *</label>
-                    <input type="text" id="taglineInput" placeholder="Enter company tagline or slogan">
+                    <label id="taglineLabel">Company Tagline/Slogan *</label>
+                    <input type="text" id="taglineInput" placeholder="Enter company tagline or slogan" class="">
                 </div>
                 
                 <!-- Optional Fields - All other information -->
@@ -534,62 +612,62 @@
                     <h4 style="color: #2c3e50; margin-bottom: 15px;">Additional Information (Optional)</h4>
                     
                     <div class="form-group optional">
-                        <label for="addressInput">Business Address</label>
-                        <textarea id="addressInput" placeholder="Enter complete business address (optional)"></textarea>
+                        <label id="addressLabel">Business Address</label>
+                        <textarea id="addressInput" placeholder="Enter complete business address (optional)" class=""></textarea>
                     </div>
                     
                     <div class="form-group optional">
-                        <label for="phoneInput">Phone Number</label>
-                        <input type="text" id="phoneInput" placeholder="Enter phone number (optional)">
+                        <label id="phoneLabel">Phone Number</label>
+                        <input type="text" id="phoneInput" placeholder="Enter phone number (optional)" class="">
                     </div>
                     
                     <div class="form-group optional">
-                        <label for="emailInput">Email Address</label>
-                        <input type="text" id="emailInput" placeholder="Enter email address (optional)">
+                        <label id="emailLabel">Email Address</label>
+                        <input type="text" id="emailInput" placeholder="Enter email address (optional)" class="">
                     </div>
                     
                     <div class="form-group optional">
-                        <label for="websiteInput">Website URL</label>
-                        <input type="text" id="websiteInput" placeholder="Enter website URL (optional)">
+                        <label id="websiteLabel">Website URL</label>
+                        <input type="text" id="websiteInput" placeholder="Enter website URL (optional)" class="">
                     </div>
                     
                     <div class="form-group optional">
-                        <label for="registrationInput">Registration/License Number</label>
-                        <input type="text" id="registrationInput" placeholder="Enter registration or license number (optional)">
+                        <label id="registrationLabel">Registration/License Number</label>
+                        <input type="text" id="registrationInput" placeholder="Enter registration or license number (optional)" class="">
                     </div>
                     
                     <div class="form-group optional">
-                        <label for="taxInput">Tax/VAT Number</label>
-                        <input type="text" id="taxInput" placeholder="Enter tax or VAT number (optional)">
+                        <label id="taxLabel">Tax/VAT Number</label>
+                        <input type="text" id="taxInput" placeholder="Enter tax or VAT number (optional)" class="">
                     </div>
                 </div>
                 
                 <!-- Custom Text Options -->
                 <div class="custom-text-section">
-                    <h3>📝 Letter Content Options</h3>
+                    <h3 id="textOptionsTitle">📝 Letter Content Options</h3>
                     <div class="text-option-group">
                         <div class="text-option active" data-text="default">
-                            <h4>Default Text</h4>
-                            <p>Use standard sample text</p>
+                            <h4 id="defaultTextTitle">Default Text</h4>
+                            <p id="defaultTextDesc">Use standard sample text</p>
                         </div>
                         <div class="text-option" data-text="custom">
-                            <h4>Custom Text</h4>
-                            <p>Add your own letter content</p>
+                            <h4 id="customTextTitle">Custom Text</h4>
+                            <p id="customTextDesc">Add your own letter content</p>
                         </div>
                         <div class="text-option" data-text="blank">
-                            <h4>Blank Letterhead</h4>
-                            <p>No text - just letterhead design</p>
+                            <h4 id="blankTextTitle">Blank Letterhead</h4>
+                            <p id="blankTextDesc">No text - just letterhead design</p>
                         </div>
                     </div>
                     
                     <div id="customTextArea" style="display: none;">
-                        <label for="customLetterText">Your Letter Content:</label>
-                        <textarea id="customLetterText" placeholder="Enter your letter content here..." style="min-height: 200px;"></textarea>
+                        <label id="customTextLabel">Your Letter Content:</label>
+                        <textarea id="customLetterText" placeholder="Enter your letter content here..." class="" style="min-height: 200px;"></textarea>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Template Style</label>
+                    <label id="templateLabel">Template Style</label>
                     <div class="template-selector">
                         <div class="template-option active" data-template="modern">
                             <h4>Modern</h4>
@@ -607,21 +685,21 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Company Logo</label>
+                    <label id="logoLabel">Company Logo</label>
                     <div class="logo-upload">
                         <input type="file" id="logoInput" accept="image/*" style="display: none;">
-                        <button type="button" onclick="document.getElementById('logoInput').click()" class="btn btn-primary">
+                        <button type="button" onclick="document.getElementById('logoInput').click()" class="btn btn-primary" id="uploadBtn">
                             📁 Upload Company Logo
                         </button>
                         <div class="logo-preview" id="logoPreview">
                             <img id="logoPreviewImg" src="" alt="Logo Preview">
                         </div>
-                        <p style="font-size: 14px; color: #7f8c8d; margin-top: 10px;">Recommended: PNG format, max 200×100px, transparent background</p>
+                        <p id="logoRecommendation" style="font-size: 14px; color: #7f8c8d; margin-top: 10px;">Recommended: PNG format, max 200×100px, transparent background</p>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Color Customization</label>
+                    <label id="colorLabel">Color Customization</label>
                     <div class="color-picker-group">
                         <div class="color-option">
                             <label for="primaryColor">Primary Color:</label>
@@ -636,29 +714,29 @@
                 
                 <div class="checkbox-group">
                     <input type="checkbox" id="showWatermark" checked>
-                    <label for="showWatermark">Show subtle logo watermark background</label>
+                    <label for="showWatermark" id="watermarkLabel">Show subtle logo watermark background</label>
                 </div>
                 
                 <div class="checkbox-group">
                     <input type="checkbox" id="showPageNumbers" checked>
-                    <label for="showPageNumbers">Show page numbers in footer</label>
+                    <label for="showPageNumbers" id="pageNumbersLabel">Show page numbers in footer</label>
                 </div>
                 
                 <div class="action-buttons">
-                    <button class="btn btn-secondary" onclick="updatePreview()">
+                    <button class="btn btn-secondary" onclick="updatePreview()" id="updateBtn">
                         👁️ Update Preview
                     </button>
-                    <button class="btn btn-primary" onclick="generatePDF()">
+                    <button class="btn btn-primary" onclick="generatePDF()" id="generateBtn">
                         📄 Generate Letterhead PDF
                     </button>
-                    <button class="btn btn-reset" onclick="resetApp()">
+                    <button class="btn btn-reset" onclick="resetApp()" id="resetBtn">
                         🔄 Reset All
                     </button>
                 </div>
             </div>
             
             <div class="preview-section">
-                <h3 style="margin-bottom: 20px; color: #2c3e50;">Letterhead Preview (A4 Standard)</h3>
+                <h3 style="margin-bottom: 20px; color: #2c3e50;" id="previewTitle">Letterhead Preview (A4 Standard)</h3>
                 
                 <div class="letterhead-preview" id="letterheadPreview">
                     <!-- Preview will be generated here -->
@@ -698,6 +776,131 @@
         let companyLogo = '';
         let currentTemplate = 'modern';
         let currentTextOption = 'default';
+        let currentLanguage = 'en';
+
+        // Multilingual content
+        const translations = {
+            en: {
+                companyName: 'Company Name *',
+                tagline: 'Company Tagline/Slogan *',
+                address: 'Business Address',
+                phone: 'Phone Number',
+                email: 'Email Address',
+                website: 'Website URL',
+                registration: 'Registration/License Number',
+                tax: 'Tax/VAT Number',
+                textOptionsTitle: '📝 Letter Content Options',
+                defaultTextTitle: 'Default Text',
+                defaultTextDesc: 'Use standard sample text',
+                customTextTitle: 'Custom Text',
+                customTextDesc: 'Add your own letter content',
+                blankTextTitle: 'Blank Letterhead',
+                blankTextDesc: 'No text - just letterhead design',
+                customTextLabel: 'Your Letter Content:',
+                templateLabel: 'Template Style',
+                logoLabel: 'Company Logo',
+                uploadBtn: '📁 Upload Company Logo',
+                logoRecommendation: 'Recommended: PNG format, max 200×100px, transparent background',
+                colorLabel: 'Color Customization',
+                watermarkLabel: 'Show subtle logo watermark background',
+                pageNumbersLabel: 'Show page numbers in footer',
+                updateBtn: '👁️ Update Preview',
+                generateBtn: '📄 Generate Letterhead PDF',
+                resetBtn: '🔄 Reset All',
+                previewTitle: 'Letterhead Preview (A4 Standard)',
+                statusText: 'Fill in your company information and click "Update Preview" to see the letterhead.'
+            },
+            ar: {
+                companyName: 'اسم الشركة *',
+                tagline: 'شعار الشركة *',
+                address: 'عنوان العمل',
+                phone: 'رقم الهاتف',
+                email: 'عنوان البريد الإلكتروني',
+                website: 'عنوان الموقع الإلكتروني',
+                registration: 'رقم التسجيل/الترخيص',
+                tax: 'رقم الضريبة/ضريبة القيمة المضافة',
+                textOptionsTitle: '📝 خيارات محتوى الرسالة',
+                defaultTextTitle: 'النص الافتراضي',
+                defaultTextDesc: 'استخدم النص النموذجي القياسي',
+                customTextTitle: 'نص مخصص',
+                customTextDesc: 'أضف محتوى رسالتك الخاص',
+                blankTextTitle: 'ورقة رأس فارغة',
+                blankTextDesc: 'بدون نص - فقط تصميم ورقة الرأس',
+                customTextLabel: 'محتوى رسالتك:',
+                templateLabel: 'نمط القالب',
+                logoLabel: 'شعار الشركة',
+                uploadBtn: '📁 تحميل شعار الشركة',
+                logoRecommendation: 'موصى به: تنسيق PNG، الحد الأقصى 200×100 بكسل، خلفية شفافة',
+                colorLabel: 'تخصيص الألوان',
+                watermarkLabel: 'إظهار علامة شعار شفافة في الخلفية',
+                pageNumbersLabel: 'إظهار أرقام الصفحات في التذييل',
+                updateBtn: '👁️ تحديث المعاينة',
+                generateBtn: '📄 إنشاء PDF لورقة الرأس',
+                resetBtn: '🔄 إعادة تعيين الكل',
+                previewTitle: 'معاينة ورقة الرأس (معيار A4)',
+                statusText: 'املأ معلومات شركتك وانقر على "تحديث المعاينة" لرؤية ورقة الرأس.'
+            },
+            ur: {
+                companyName: 'کمپنی کا نام *',
+                tagline: 'کمپنی کا نعرہ/سلیگن *',
+                address: 'کاروباری پتہ',
+                phone: 'فون نمبر',
+                email: 'ای میل ایڈریس',
+                website: 'ویب سائٹ کا یو آر ایل',
+                registration: 'رجسٹریشن/لائسنس نمبر',
+                tax: 'ٹیکس/ویٹ نمبر',
+                textOptionsTitle: '📝 خط کے مواد کے اختیارات',
+                defaultTextTitle: 'ڈیفالٹ متن',
+                defaultTextDesc: 'معیاری نمونہ متن استعمال کریں',
+                customTextTitle: 'کسٹم متن',
+                customTextDesc: 'اپنا اپنا خط کا مواد شامل کریں',
+                blankTextTitle: 'خالی لیٹر ہیڈ',
+                blankTextDesc: 'کوئی متن نہیں - صرف لیٹر ہیڈ ڈیزائن',
+                customTextLabel: 'آپ کا خط کا مواد:',
+                templateLabel: 'ٹیمپلیٹ کا انداز',
+                logoLabel: 'کمپنی کا لوگو',
+                uploadBtn: '📁 کمپنی کا لوگو اپ لوڈ کریں',
+                logoRecommendation: 'یہ تجویز کردہ ہے: PNG فارمیٹ، زیادہ سے زیادہ 200×100 پکسلز، شفاف پس منظر',
+                colorLabel: 'رنگوں کی تخصیص',
+                watermarkLabel: 'پس منظر میں دھیما لوگو واٹر مارک دکھائیں',
+                pageNumbersLabel: 'فوٹر میں صفحہ نمبر دکھائیں',
+                updateBtn: '👁️ پیش نظارہ اپ ڈیٹ کریں',
+                generateBtn: '📄 لیٹر ہیڈ PDF بنائیں',
+                resetBtn: '🔄 سب ری سیٹ کریں',
+                previewTitle: 'لیٹر ہیڈ کا پیش نظارہ (A4 معیار)',
+                statusText: 'اپنی کمپنی کی معلومات پُر کریں اور لیٹر ہیڈ کو دیکھنے کے لیے "پیش نظارہ اپ ڈیٹ کریں" پر کلک کریں۔'
+            },
+            hi: {
+                companyName: 'कंपनी का नाम *',
+                tagline: 'कंपनी का टैगलाइन/स्लोगन *',
+                address: 'व्यावसायिक पता',
+                phone: 'फोन नंबर',
+                email: 'ईमेल पता',
+                website: 'वेबसाइट यूआरएल',
+                registration: 'पंजीकरण/लाइसेंस नंबर',
+                tax: 'टैक्स/वैट नंबर',
+                textOptionsTitle: '📝 पत्र सामग्री विकल्प',
+                defaultTextTitle: 'डिफॉल्ट टेक्स्ट',
+                defaultTextDesc: 'मानक नमूना टेक्स्ट का प्रयोग करें',
+                customTextTitle: 'कस्टम टेक्स्ट',
+                customTextDesc: 'अपना खुद का पत्र सामग्री जोड़ें',
+                blankTextTitle: 'खाली लेटरहेड',
+                blankTextDesc: 'कोई टेक्स्ट नहीं - सिर्फ लेटरहेड डिज़ाइन',
+                customTextLabel: 'आपका पत्र सामग्री:',
+                templateLabel: 'टेम्पलेट शैली',
+                logoLabel: 'कंपनी लोगो',
+                uploadBtn: '📁 कंपनी लोगो अपलोड करें',
+                logoRecommendation: 'अनुशंसित: PNG प्रारूप, अधिकतम 200×100 पिक्सेल, पारदर्शी पृष्ठभूमि',
+                colorLabel: 'रंग अनुकूलन',
+                watermarkLabel: 'पृष्ठभूमि में सूक्ष्म लोगो वॉटरमार्क दिखाएं',
+                pageNumbersLabel: 'फुटर में पृष्ठ संख्या दिखाएं',
+                updateBtn: '👁️ पूर्वावलोकन अपडेट करें',
+                generateBtn: '📄 लेटरहेड PDF बनाएं',
+                resetBtn: '🔄 सभी रीसेट करें',
+                previewTitle: 'लेटरहेड पूर्वावलोकन (A4 मानक)',
+                statusText: 'अपनी कंपनी की जानकारी भरें और लेटरहेड देखने के लिए "पूर्वावलोकन अपडेट करें" पर क्लिक करें।'
+            }
+        };
 
         // Handle logo upload
         logoInput.addEventListener('change', function(e) {
@@ -709,7 +912,7 @@
                     companyLogo = e.target.result;
                     logoPreviewImg.src = companyLogo;
                     logoPreview.style.display = 'block';
-                    status.textContent = 'Logo uploaded successfully! Click "Update Preview" to see changes.';
+                    updateLanguageStatus();
                 };
                 
                 reader.readAsDataURL(file);
@@ -744,21 +947,139 @@
             });
         });
 
-        // Get letter content based on selected option
+        // Set language
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+            
+            // Update UI text
+            updateUIText(lang);
+            
+            // Update input placeholders and directions
+            updateInputDirections(lang);
+            
+            // Update preview
+            updatePreview();
+        }
+
+        // Update UI text based on language
+        function updateUIText(lang) {
+            const texts = translations[lang];
+            
+            // Update all labels and buttons
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = texts[key];
+                }
+            });
+            
+            // Update placeholder text
+            updatePlaceholders(lang);
+        }
+
+        // Update input placeholders
+        function updatePlaceholders(lang) {
+            const placeholders = {
+                en: {
+                    companyName: 'Enter your company name',
+                    tagline: 'Enter company tagline or slogan',
+                    address: 'Enter complete business address (optional)',
+                    phone: 'Enter phone number (optional)',
+                    email: 'Enter email address (optional)',
+                    website: 'Enter website URL (optional)',
+                    registration: 'Enter registration or license number (optional)',
+                    tax: 'Enter tax or VAT number (optional)',
+                    customLetterText: 'Enter your letter content here...'
+                },
+                ar: {
+                    companyName: 'أدخل اسم شركتك',
+                    tagline: 'أدخل شعار أو شعار الشركة',
+                    address: 'أدخل عنوان العمل الكامل (اختياري)',
+                    phone: 'أدخل رقم الهاتف (اختياري)',
+                    email: 'أدخل عنوان البريد الإلكتروني (اختياري)',
+                    website: 'أدخل عنوان الموقع الإلكتروني (اختياري)',
+                    registration: 'أدخل رقم التسجيل أو الترخيص (اختياري)',
+                    tax: 'أدخل رقم الضريبة أو ضريبة القيمة المضافة (اختياري)',
+                    customLetterText: 'أدخل محتوى رسالتك هنا...'
+                },
+                ur: {
+                    companyName: 'اپنی کمپنی کا نام درج کریں',
+                    tagline: 'کمپنی کا نعرہ یا سلیگن درج کریں',
+                    address: 'مکمل کاروباری پتہ درج کریں (اختیاری)',
+                    phone: 'فون نمبر درج کریں (اختیاری)',
+                    email: 'ای میل ایڈریس درج کریں (اختیاری)',
+                    website: 'ویب سائٹ کا یو آر ایل درج کریں (اختیاری)',
+                    registration: 'رجسٹریشن یا لائسنس نمبر درج کریں (اختیاری)',
+                    tax: 'ٹیکس یا ویٹ نمبر درج کریں (اختیاری)',
+                    customLetterText: 'اپنا خط کا مواد یہاں درج کریں...'
+                },
+                hi: {
+                    companyName: 'अपनी कंपनी का नाम दर्ज करें',
+                    tagline: 'कंपनी का टैगलाइन/स्लोगन दर्ज करें',
+                    address: 'पूरा व्यावसायिक पता दर्ज करें (वैकल्पिक)',
+                    phone: 'फोन नंबर दर्ज करें (वैकल्पिक)',
+                    email: 'ईमेल पता दर्ज करें (वैकल्पिक)',
+                    website: 'वेबसाइट यूआरएल दर्ज करें (वैकल्पिक)',
+                    registration: 'पंजीकरण/लाइसेंस नंबर दर्ज करें (वैकल्पिक)',
+                    tax: 'टैक्स/वैट नंबर दर्ज करें (वैकल्पिक)',
+                    customLetterText: 'अपना पत्र सामग्री यहाँ दर्ज करें...'
+                }
+            };
+            
+            document.getElementById('companyNameInput').placeholder = placeholders[lang].companyName;
+            document.getElementById('taglineInput').placeholder = placeholders[lang].tagline;
+            document.getElementById('addressInput').placeholder = placeholders[lang].address;
+            document.getElementById('phoneInput').placeholder = placeholders[lang].phone;
+            document.getElementById('emailInput').placeholder = placeholders[lang].email;
+            document.getElementById('websiteInput').placeholder = placeholders[lang].website;
+            document.getElementById('registrationInput').placeholder = placeholders[lang].registration;
+            document.getElementById('taxInput').placeholder = placeholders[lang].tax;
+            document.getElementById('customLetterText').placeholder = placeholders[lang].customLetterText;
+        }
+
+        // Update input directions for RTL languages
+        function updateInputDirections(lang) {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (lang === 'ar' || lang === 'ur') {
+                    input.setAttribute('dir', 'rtl');
+                    input.classList.add(lang);
+                } else if (lang === 'hi') {
+                    input.setAttribute('dir', 'ltr');
+                    input.classList.add(lang);
+                } else {
+                    input.setAttribute('dir', 'ltr');
+                    input.classList.remove('arabic', 'urdu', 'hindi');
+                }
+            });
+        }
+
+        // Update language status
+        function updateLanguageStatus() {
+            status.textContent = translations[currentLanguage].statusText;
+        }
+
+        // Get letter content based on selected option and language
         function getLetterContent() {
             const companyName = document.getElementById('companyNameInput').value || 'Your Company Name';
             
-            switch(currentTextOption) {
-                case 'custom':
-                    const customText = document.getElementById('customLetterText').value;
-                    return customText || 'Your custom letter content will appear here...';
-                
-                case 'blank':
-                    return '';
-                
-                case 'default':
-                default:
-                    return `Dear [Recipient Name],
+            if (currentTextOption === 'custom') {
+                return document.getElementById('customLetterText').value || 'Your custom letter content will appear here...';
+            }
+            
+            if (currentTextOption === 'blank') {
+                return '';
+            }
+            
+            // Default text in selected language
+            const defaultTexts = {
+                en: `Dear [Recipient Name],
 
 This letterhead follows ISO 269 A4 paper standards with proper margins and professional layout.
 
@@ -769,8 +1090,46 @@ All elements are positioned according to international business letterhead conve
 Best regards,
 ${companyName}
 
-P.S. This PDF is print-ready and optimized for professional business communications.`;
-            }
+P.S. This PDF is print-ready and optimized for professional business communications.`,
+                ar: `عزيزي [اسم المستلم],
+
+تتبع هذه ورقة الرأس معايير ISO 269 لورق A4 مع هوامش مناسبة وتخطيط احترافي.
+
+يتضمن التصميم علامتك التجارية مع الطباعة المتسقة ومخطط الألوان.
+
+يتم وضع جميع العناصر وفقًا للاتفاقيات الدولية لورق الرأس التجاري.
+
+مع أطيب التحيات،
+${companyName}
+
+ملاحظة: هذا PDF جاهز للطباعة ومحسّن للاتصالات التجارية الاحترافية.`,
+                ur: `محترم [وصول کنندہ کا نام]،
+
+یہ لیٹر ہیڈ ISO 269 A4 پیپر معیارات کے ساتھ مناسب مارجنز اور پیشہ ورانہ لے آؤٹ کی پیروی کرتا ہے۔
+
+ڈیزائن میں آپ کی کمپنی کی برانڈنگ مستقل ٹائپوگرافی اور رنگ اسکیم کے ساتھ شامل ہے۔
+
+تمام عناصر بین الاقوامی بزنس لیٹر ہیڈ کنونشنز کے مطابق رکھے گئے ہیں۔
+
+نیک تمنائوں کے ساتھ،
+${companyName}
+
+نوٹ: یہ PDF پرنٹ کے لیے تیار ہے اور پیشہ ورانہ بزنس مواصلت کے لیے بہتر ہے۔`,
+                hi: `प्रिय [प्राप्तकर्ता का नाम],
+
+यह लेटरहेड उचित मार्जिन और पेशेवर लेआउट के साथ ISO 269 A4 पेपर मानकों का पालन करता है।
+
+डिज़ाइन में सुसंगत टाइपोग्राफी और रंग योजना के साथ आपकी कंपनी की ब्रांडिंग शामिल है।
+
+सभी तत्व अंतरराष्ट्रीय व्यावसायिक लेटरहेड सम्मेलनों के अनुसार स्थित हैं।
+
+सादर,
+${companyName}
+
+नोट: यह PDF प्रिंट के लिए तैयार है और पेशेवर व्यावसायिक संचार के लिए अनुकूलित है।`
+            };
+            
+            return defaultTexts[currentLanguage] || defaultTexts['en'];
         }
 
         // Update letterhead preview
@@ -789,14 +1148,21 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             const showPageNumbers = document.getElementById('showPageNumbers').checked;
 
             const letterContent = getLetterContent();
-            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            const today = new Date().toLocaleDateString(currentLanguage === 'ar' || currentLanguage === 'ur' ? 'ar-SA' : 'en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
 
             let previewHTML = '';
+
+            // Add language-specific classes
+            const langClass = currentLanguage !== 'en' ? currentLanguage : '';
 
             switch(currentTemplate) {
                 case 'modern':
                     previewHTML = `
-                        <div class="letterhead-header" style="background: linear-gradient(135deg, #ffffff 0%, ${primaryColor}08 100%);">
+                        <div class="letterhead-header ${langClass}" style="background: linear-gradient(135deg, #ffffff 0%, ${primaryColor}08 100%);">
                             <div class="letterhead-logo-section">
                                 <div class="letterhead-logo">
                                     ${companyLogo ? `<img src="${companyLogo}" alt="Company Logo">` : '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 12px;">LOGO</div>'}
@@ -816,7 +1182,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     
                 case 'classic':
                     previewHTML = `
-                        <div class="letterhead-header" style="text-align: center; background: linear-gradient(135deg, #ffffff 0%, ${primaryColor}05 100%);">
+                        <div class="letterhead-header ${langClass}" style="text-align: center; background: linear-gradient(135deg, #ffffff 0%, ${primaryColor}05 100%);">
                             <div class="letterhead-company-info">
                                 ${companyLogo ? `<div class="letterhead-logo" style="margin: 0 auto 15px;"><img src="${companyLogo}" alt="Company Logo"></div>` : ''}
                                 <div class="letterhead-company-name" style="color: ${primaryColor}; font-size: 28px;">${companyName}</div>
@@ -833,7 +1199,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     
                 case 'corporate':
                     previewHTML = `
-                        <div class="letterhead-header" style="background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); color: white;">
+                        <div class="letterhead-header ${langClass}" style="background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%); color: white;">
                             <div class="letterhead-logo-section">
                                 <div class="letterhead-logo" style="border-color: rgba(255,255,255,0.3);">
                                     ${companyLogo ? `<img src="${companyLogo}" alt="Company Logo">` : '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); font-size: 12px;">LOGO</div>'}
@@ -859,8 +1225,8 @@ P.S. This PDF is print-ready and optimized for professional business communicati
 
             // Add date section
             previewHTML += `
-                <div class="letterhead-date-section">
-                    <div style="font-weight: 600; color: ${primaryColor}; margin-bottom: 5px;">Date</div>
+                <div class="letterhead-date-section ${langClass}">
+                    <div style="font-weight: 600; color: ${primaryColor}; margin-bottom: 5px;">${currentLanguage === 'ar' ? 'التاريخ' : currentLanguage === 'ur' ? 'تاریخ' : currentLanguage === 'hi' ? 'तिथि' : 'Date'}</div>
                     <div>${today}</div>
                 </div>
             `;
@@ -868,7 +1234,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             // Add body section with letter content
             if (letterContent) {
                 previewHTML += `
-                    <div class="letterhead-body">
+                    <div class="letterhead-body ${langClass}">
                         <div style="white-space: pre-line; font-family: inherit; font-size: 14px; line-height: 1.6; color: #34495e;">
                             ${letterContent}
                         </div>
@@ -877,12 +1243,12 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             } else {
                 // Empty letterhead for custom writing
                 previewHTML += `
-                    <div class="letterhead-body" style="min-height: 500px;">
+                    <div class="letterhead-body ${langClass}" style="min-height: 500px;">
                         <div style="border: 2px dashed #e9ecef; height: 100%; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 16px; text-align: center;">
                             <div>
                                 <div style="font-size: 24px; margin-bottom: 10px;">📝</div>
-                                <div>Ready for your custom letter content</div>
-                                <div style="font-size: 14px; margin-top: 10px;">Print this blank letterhead and write your letter by hand,<br>or generate with your custom text</div>
+                                <div>${currentLanguage === 'ar' ? 'جاهز لمحتوى رسالتك المخصص' : currentLanguage === 'ur' ? 'آپ کے کسٹم خط کے مواد کے لیے تیار' : currentLanguage === 'hi' ? 'आपके कस्टम पत्र सामग्री के लिए तैयार' : 'Ready for your custom letter content'}</div>
+                                <div style="font-size: 14px; margin-top: 10px;">${currentLanguage === 'ar' ? 'اطبع هذه الورقة الرأسية واكتب خطابك يدويًا ، أو أنشئها بنصك المخصص' : currentLanguage === 'ur' ? 'اس خالی لیٹر ہیڈ کو پرنٹ کریں اور اپنے خط کو ہاتھ سے لکھیں ، یا اپنے کسٹم ٹیکسٹ کے ساتھ تیار کریں' : currentLanguage === 'hi' ? 'इस खाली लेटरहेड को प्रिंट करें और अपना पत्र हाथ से लिखें, या अपने कस्टम टेक्स्ट के साथ तैयार करें' : 'Print this blank letterhead and write your letter by hand, or generate with your custom text'}</div>
                             </div>
                         </div>
                     </div>
@@ -893,7 +1259,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             let footerContactHTML = '';
             if (address || phone || email || website) {
                 footerContactHTML = `
-                    <div class="letterhead-contact-info">
+                    <div class="letterhead-contact-info ${langClass}">
                         ${address ? `<div class="letterhead-contact-item">${address.replace(/\n/g, ' | ')}</div>` : ''}
                         ${phone || email || website ? `
                             <div class="letterhead-contact-item">
@@ -909,10 +1275,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             }
 
             previewHTML += `
-                <div class="letterhead-footer" style="background: linear-gradient(135deg, ${primaryColor}08 0%, #f8f9fa 100%);">
+                <div class="letterhead-footer ${langClass}" style="background: linear-gradient(135deg, ${primaryColor}08 0%, #f8f9fa 100%);">
                     ${footerContactHTML}
                     <div class="letterhead-footer-text">
-                        ${showPageNumbers ? 'Page 1 of 1' : ''}
+                        ${showPageNumbers ? (currentLanguage === 'ar' ? 'صفحة 1 من 1' : currentLanguage === 'ur' ? 'صفحہ 1 از 1' : currentLanguage === 'hi' ? 'पृष्ठ 1 का 1' : 'Page 1 of 1') : ''}
                     </div>
                     <div class="letterhead-footer-website" style="color: ${secondaryColor};">
                         ${companyName}
@@ -921,7 +1287,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             `;
 
             letterheadPreview.innerHTML = previewHTML;
-            status.textContent = 'Letterhead preview updated! Click "Generate Letterhead PDF" to create your printable version.';
+            updateLanguageStatus();
         }
 
         // Generate PDF
@@ -942,11 +1308,11 @@ P.S. This PDF is print-ready and optimized for professional business communicati
 
             // Check only required fields
             if (!companyName || !tagline) {
-                status.textContent = 'Please fill in Company Name and Tagline (required fields).';
+                status.textContent = translations[currentLanguage].statusText;
                 return;
             }
 
-            status.textContent = 'Generating professional letterhead PDF...';
+            status.textContent = translations[currentLanguage].statusText;
 
             // Create PDF with A4 dimensions
             const pdf = new jsPDF({
@@ -958,10 +1324,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             // A4 dimensions: 210mm × 297mm
             const pageWidth = 210;
             const pageHeight = 297;
-            const marginTop = 12.5; // Reduced from 25mm
-            const marginBottom = 12.5; // Reduced from 25mm
-            const marginLeft = 10; // Reduced from 20mm
-            const marginRight = 10; // Reduced from 20mm
+            const marginTop = 12.5;
+            const marginBottom = 12.5;
+            const marginLeft = 10;
+            const marginRight = 10;
             const contentWidth = pageWidth - marginLeft - marginRight;
 
             // Colors (CMYK-friendly)
@@ -981,14 +1347,11 @@ P.S. This PDF is print-ready and optimized for professional business communicati
 
             // Add watermark if enabled
             if (showWatermark) {
-                // Transparent background
                 pdf.setFillColor(250, 250, 250);
                 pdf.rect(0, 0, pageWidth, pageHeight, 'F');
                 
-                // Logo watermark (if available)
                 if (companyLogo) {
                     try {
-                        // Large centered logo with transparency effect
                         pdf.setGState(new pdf.GState({ opacity: 0.08 }));
                         pdf.addImage(companyLogo, 'PNG', 
                             pageWidth/2 - 60, pageHeight/2 - 40, 
@@ -998,7 +1361,6 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         console.error('Error adding logo watermark:', error);
                     }
                 } else {
-                    // Company name text watermark
                     pdf.setFontSize(60);
                     pdf.setTextColor(248, 248, 248);
                     pdf.setFont(undefined, 'bold');
@@ -1012,12 +1374,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                 }
             }
 
-            // Generate letterhead based on template - CONTACT INFO MOVED TO FOOTER
+            // Generate letterhead based on template - WITH MULTILINGUAL SUPPORT
             switch(currentTemplate) {
                 case 'modern':
-                    // Modern template - NO CONTACT INFO IN HEADER
-                    
-                    // Logo
+                    // Modern template
                     if (companyLogo) {
                         try {
                             pdf.addImage(companyLogo, 'PNG', marginLeft, marginTop - 5, 25, 25);
@@ -1026,18 +1386,29 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         }
                     }
                     
-                    // Company info (name and tagline only)
                     pdf.setFontSize(16);
                     pdf.setTextColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
                     pdf.setFont(undefined, 'bold');
-                    pdf.text(companyName, marginLeft + (companyLogo ? 30 : 0), marginTop + 5);
+                    
+                    // Handle RTL for Arabic and Urdu
+                    if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                        const nameWidth = pdf.getTextWidth(companyName);
+                        pdf.text(companyName, marginLeft + contentWidth - nameWidth - (companyLogo ? 30 : 0), marginTop + 5);
+                    } else {
+                        pdf.text(companyName, marginLeft + (companyLogo ? 30 : 0), marginTop + 5);
+                    }
                     pdf.setFont(undefined, 'normal');
                     
                     pdf.setFontSize(11);
                     pdf.setTextColor(100, 100, 100);
-                    pdf.text(tagline, marginLeft + (companyLogo ? 30 : 0), marginTop + 10);
                     
-                    // Registration/Tax info (only if provided)
+                    if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                        const taglineWidth = pdf.getTextWidth(tagline);
+                        pdf.text(tagline, marginLeft + contentWidth - taglineWidth - (companyLogo ? 30 : 0), marginTop + 10);
+                    } else {
+                        pdf.text(tagline, marginLeft + (companyLogo ? 30 : 0), marginTop + 10);
+                    }
+                    
                     const rightX = marginLeft + contentWidth - 50;
                     pdf.setFontSize(8);
                     if (registration) pdf.text(`Reg: ${registration}`, rightX, marginTop + 5);
@@ -1045,9 +1416,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     break;
                     
                 case 'classic':
-                    // Classic centered template - NO CONTACT INFO IN HEADER
-                    
-                    // Centered layout
+                    // Classic centered template
                     const centerX = pageWidth / 2;
                     
                     if (companyLogo) {
@@ -1061,34 +1430,48 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.setFontSize(18);
                     pdf.setTextColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
                     pdf.setFont(undefined, 'bold');
-                    const companyWidth = pdf.getTextWidth(companyName);
-                    pdf.text(companyName, centerX - companyWidth / 2, marginTop + 25);
+                    
+                    if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                        const nameWidth = pdf.getTextWidth(companyName);
+                        pdf.text(companyName, centerX - nameWidth / 2, marginTop + 25);
+                    } else {
+                        const companyWidth = pdf.getTextWidth(companyName);
+                        pdf.text(companyName, centerX - companyWidth / 2, marginTop + 25);
+                    }
                     pdf.setFont(undefined, 'normal');
                     
                     pdf.setFontSize(11);
                     pdf.setTextColor(100, 100, 100);
-                    const taglineWidth = pdf.getTextWidth(tagline);
-                    pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
                     
-                    // Registration/Tax info (only if provided)
+                    if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                        const taglineWidth = pdf.getTextWidth(tagline);
+                        pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
+                    } else {
+                        const taglineWidth = pdf.getTextWidth(tagline);
+                        pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
+                    }
+                    
                     if (registration || tax) {
                         const regText = `${registration ? `Reg: ${registration}` : ''}${registration && tax ? ' | ' : ''}${tax ? `VAT: ${tax}` : ''}`;
                         if (regText.trim()) {
-                            const regWidth = pdf.getTextWidth(regText);
-                            pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
-                            pdf.text(regText, centerX - regWidth / 2, marginTop + 40);
+                            if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                                const regWidth = pdf.getTextWidth(regText);
+                                pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
+                                pdf.text(regText, centerX - regWidth / 2, marginTop + 40);
+                            } else {
+                                const regWidth = pdf.getTextWidth(regText);
+                                pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
+                                pdf.text(regText, centerX - regWidth / 2, marginTop + 40);
+                            }
                         }
                     }
                     break;
                     
                 case 'corporate':
-                    // Corporate colored header - NO CONTACT INFO IN HEADER
-                    
-                    // Colored header background
+                    // Corporate colored header
                     pdf.setFillColor(primaryCMYK.c * 255, primaryCMYK.m * 255, primaryCMYK.y * 255, primaryCMYK.k * 255);
                     pdf.rect(marginLeft, marginTop - 15, contentWidth, 25, 'F');
                     
-                    // White text on colored background
                     pdf.setTextColor(255, 255, 255);
                     pdf.setFontSize(16);
                     pdf.setFont(undefined, 'bold');
@@ -1098,7 +1481,6 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.setFontSize(11);
                     pdf.text(tagline, marginLeft, marginTop + 3);
                     
-                    // Logo in header
                     if (companyLogo) {
                         try {
                             pdf.addImage(companyLogo, 'PNG', marginLeft + contentWidth - 25, marginTop - 12, 20, 20);
@@ -1107,7 +1489,6 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         }
                     }
                     
-                    // Registration/Tax info bar (only if provided)
                     if (registration || tax) {
                         pdf.setFillColor(secondaryCMYK.c * 50, secondaryCMYK.m * 50, secondaryCMYK.y * 50, secondaryCMYK.k * 50);
                         pdf.rect(marginLeft, marginTop + 12, contentWidth, 12, 'F');
@@ -1138,34 +1519,72 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             
             if (footerInfo.length > 0) {
                 const contactText = footerInfo.join(' | ');
-                pdf.text(contactText, marginLeft, footerY);
+                
+                if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                    const contactWidth = pdf.getTextWidth(contactText);
+                    pdf.text(contactText, marginLeft + contentWidth - contactWidth, footerY);
+                } else {
+                    pdf.text(contactText, marginLeft, footerY);
+                }
             }
             
             // Page numbers and company name
             pdf.setFontSize(8);
             pdf.setTextColor(100, 100, 100);
+            
+            let pageText = 'Page 1 of 1';
+            if (currentLanguage === 'ar') pageText = 'صفحة 1 من 1';
+            else if (currentLanguage === 'ur') pageText = 'صفحہ 1 از 1';
+            else if (currentLanguage === 'hi') pageText = 'पृष्ठ 1 का 1';
+            
             if (showPageNumbers) {
-                pdf.text('Page 1 of 1', marginLeft, pageHeight - marginBottom - 8);
+                if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                    const pageWidth = pdf.getTextWidth(pageText);
+                    pdf.text(pageText, marginLeft + contentWidth - pageWidth, pageHeight - marginBottom - 8);
+                } else {
+                    pdf.text(pageText, marginLeft, pageHeight - marginBottom - 8);
+                }
             }
-            pdf.text(companyName, marginLeft + contentWidth - pdf.getTextWidth(companyName), pageHeight - marginBottom - 8);
+            
+            if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                const companyWidth = pdf.getTextWidth(companyName);
+                pdf.text(companyName, marginLeft + contentWidth - companyWidth, pageHeight - marginBottom - 8);
+            } else {
+                pdf.text(companyName, marginLeft + contentWidth - pdf.getTextWidth(companyName), pageHeight - marginBottom - 8);
+            }
 
-            // Add letter content
+            // Add letter content with proper text direction
             if (letterContent) {
                 pdf.setFontSize(11);
                 pdf.setTextColor(0, 0, 0);
                 const lines = letterContent.split('\n');
-                let contentY = marginTop + 35; // Adjusted for reduced margins
+                let contentY = marginTop + 35;
+                
                 lines.forEach((line, index) => {
                     if (line.trim()) {
-                        pdf.text(line, marginLeft, contentY);
+                        if (currentLanguage === 'ar' || currentLanguage === 'ur') {
+                            const lineWidth = pdf.getTextWidth(line);
+                            pdf.text(line, marginLeft + contentWidth - lineWidth, contentY);
+                        } else {
+                            pdf.text(line, marginLeft, contentY);
+                        }
                     }
                     contentY += index === 0 ? 8 : 6;
                 });
             }
 
-            // Save the PDF
-            pdf.save(`${companyName.replace(/\s+/g, '-').toLowerCase()}-letterhead.pdf`);
-            status.textContent = 'Professional letterhead PDF generated successfully! Check your downloads folder.';
+            // Save the PDF with language-specific filename
+            let filename = `${companyName.replace(/\s+/g, '-').toLowerCase()}-letterhead.pdf`;
+            if (currentLanguage === 'ar') {
+                filename = `ورقة-رأس-${companyName.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+            } else if (currentLanguage === 'ur') {
+                filename = `لیٹر-ہیڈ-${companyName.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+            } else if (currentLanguage === 'hi') {
+                filename = `लेटरहेड-${companyName.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+            }
+            
+            pdf.save(filename);
+            status.textContent = translations[currentLanguage].statusText;
         }
 
         function resetApp() {
@@ -1200,14 +1619,18 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             currentTextOption = 'default';
             customTextArea.style.display = 'none';
             
+            // Reset language
+            setLanguage('en');
+            
             // Clear preview
             letterheadPreview.innerHTML = '';
             
-            status.textContent = 'All data cleared. Fill in your company information to get started!';
+            status.textContent = translations[currentLanguage].statusText;
         }
 
         // Initialize with sample preview
         window.addEventListener('load', function() {
+            setLanguage('en');
             updatePreview();
         });
     </script>
