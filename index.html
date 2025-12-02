@@ -91,12 +91,6 @@
             background: white;
         }
         
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
         .form-group textarea {
             resize: vertical;
             min-height: 100px;
@@ -340,6 +334,54 @@
             font-weight: 600;
         }
         
+        .custom-text-section {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .custom-text-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .text-option-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .text-option {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .text-option:hover {
+            border-color: #3498db;
+        }
+        
+        .text-option.active {
+            border-color: #3498db;
+            background: #e8f4fc;
+        }
+        
+        .text-option h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .text-option p {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
         .status {
             text-align: center;
             margin: 20px 0;
@@ -455,6 +497,10 @@
             .letterhead-extra {
                 text-align: left;
             }
+            
+            .text-option-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -513,6 +559,30 @@
                     <input type="text" id="taxInput" placeholder="Enter tax or VAT number">
                 </div>
                 
+                <!-- Custom Text Options -->
+                <div class="custom-text-section">
+                    <h3>📝 Letter Content Options</h3>
+                    <div class="text-option-group">
+                        <div class="text-option active" data-text="default">
+                            <h4>Default Text</h4>
+                            <p>Use standard sample text</p>
+                        </div>
+                        <div class="text-option" data-text="custom">
+                            <h4>Custom Text</h4>
+                            <p>Add your own letter content</p>
+                        </div>
+                        <div class="text-option" data-text="blank">
+                            <h4>Blank Letterhead</h4>
+                            <p>No text - just letterhead design</p>
+                        </div>
+                    </div>
+                    
+                    <div id="customTextArea" style="display: none;">
+                        <label for="customLetterText">Your Letter Content:</label>
+                        <textarea id="customLetterText" placeholder="Enter your letter content here..." style="min-height: 200px;"></textarea>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label>Template Style</label>
                     <div class="template-selector">
@@ -561,7 +631,7 @@
                 
                 <div class="checkbox-group">
                     <input type="checkbox" id="showWatermark" checked>
-                    <label for="showWatermark">Show subtle watermark background</label>
+                    <label for="showWatermark">Show subtle logo watermark background</label>
                 </div>
                 
                 <div class="checkbox-group">
@@ -616,10 +686,13 @@
         const logoPreview = document.getElementById('logoPreview');
         const logoPreviewImg = document.getElementById('logoPreviewImg');
         const templateOptions = document.querySelectorAll('.template-option');
+        const textOptions = document.querySelectorAll('.text-option');
+        const customTextArea = document.getElementById('customTextArea');
         
         // Store the company logo
         let companyLogo = '';
         let currentTemplate = 'modern';
+        let currentTextOption = 'default';
 
         // Handle logo upload
         logoInput.addEventListener('change', function(e) {
@@ -648,6 +721,53 @@
             });
         });
 
+        // Text option selection
+        textOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                textOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                currentTextOption = this.dataset.text;
+                
+                // Show/hide custom text area
+                if (currentTextOption === 'custom') {
+                    customTextArea.style.display = 'block';
+                } else {
+                    customTextArea.style.display = 'none';
+                }
+                
+                updatePreview();
+            });
+        });
+
+        // Get letter content based on selected option
+        function getLetterContent() {
+            const companyName = document.getElementById('companyNameInput').value || 'Your Company Name';
+            
+            switch(currentTextOption) {
+                case 'custom':
+                    const customText = document.getElementById('customLetterText').value;
+                    return customText || 'Your custom letter content will appear here...';
+                
+                case 'blank':
+                    return '';
+                
+                case 'default':
+                default:
+                    return `Dear [Recipient Name],
+
+This letterhead follows ISO 269 A4 paper standards with proper margins and professional layout.
+
+The design incorporates your company branding with consistent typography and color scheme.
+
+All elements are positioned according to international business letterhead conventions.
+
+Best regards,
+${companyName}
+
+P.S. This PDF is print-ready and optimized for professional business communications.`;
+            }
+        }
+
         // Update letterhead preview
         function updatePreview() {
             const companyName = document.getElementById('companyNameInput').value || 'Your Company Name';
@@ -662,6 +782,9 @@
             const secondaryColor = document.getElementById('secondaryColor').value;
             const showWatermark = document.getElementById('showWatermark').checked;
             const showPageNumbers = document.getElementById('showPageNumbers').checked;
+
+            const letterContent = getLetterContent();
+            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
             let previewHTML = '';
 
@@ -748,7 +871,6 @@
             }
 
             // Add date section
-            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             previewHTML += `
                 <div class="letterhead-date-section">
                     <div style="font-weight: 600; color: ${primaryColor}; margin-bottom: 5px;">Date</div>
@@ -756,17 +878,29 @@
                 </div>
             `;
 
-            // Add body section
-            previewHTML += `
-                <div class="letterhead-body">
-                    <h2>Subject: Business Communication</h2>
-                    <p>Dear [Recipient Name],</p>
-                    <p>This is a sample letterhead showing your professional branding. The layout follows international standards with proper margins and typography.</p>
-                    <p>Your company letterhead is now ready for professional business communications. You can generate the PDF and print it on A4 paper for best results.</p>
-                    <p>Best regards,</p>
-                    <p><strong>${companyName}</strong></p>
-                </div>
-            `;
+            // Add body section with letter content
+            if (letterContent) {
+                previewHTML += `
+                    <div class="letterhead-body">
+                        <div style="white-space: pre-line; font-family: inherit; font-size: 14px; line-height: 1.6; color: #34495e;">
+                            ${letterContent}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Empty letterhead for custom writing
+                previewHTML += `
+                    <div class="letterhead-body" style="min-height: 500px;">
+                        <div style="border: 2px dashed #e9ecef; height: 100%; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 16px; text-align: center;">
+                            <div>
+                                <div style="font-size: 24px; margin-bottom: 10px;">📝</div>
+                                <div>Ready for your custom letter content</div>
+                                <div style="font-size: 14px; margin-top: 10px;">Print this blank letterhead and write your letter by hand,<br>or generate with your custom text</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             // Add footer
             previewHTML += `
@@ -798,6 +932,7 @@
             const secondaryColor = document.getElementById('secondaryColor').value;
             const showWatermark = document.getElementById('showWatermark').checked;
             const showPageNumbers = document.getElementById('showPageNumbers').checked;
+            const letterContent = getLetterContent();
 
             if (!companyName || !address || !phone || !email) {
                 status.textContent = 'Please fill in all required fields (Company Name, Address, Phone, Email).';
@@ -839,17 +974,35 @@
 
             // Add watermark if enabled
             if (showWatermark) {
-                pdf.setFillColor(240, 240, 240);
+                // Transparent background
+                pdf.setFillColor(250, 250, 250);
                 pdf.rect(0, 0, pageWidth, pageHeight, 'F');
                 
-                // Subtle company name watermark
-                pdf.setFontSize(60);
-                pdf.setTextColor(250, 250, 250);
-                pdf.setFont(undefined, 'bold');
-                const watermarkText = companyName.substring(0, 15).toUpperCase();
-                const watermarkWidth = pdf.getTextWidth(watermarkText);
-                pdf.text(watermarkText, (pageWidth - watermarkWidth) / 2, pageHeight / 2, { angle: 45 });
-                pdf.setFont(undefined, 'normal');
+                // Logo watermark (if available)
+                if (companyLogo) {
+                    try {
+                        // Large centered logo with transparency effect
+                        pdf.setGState(new pdf.GState({ opacity: 0.08 }));
+                        pdf.addImage(companyLogo, 'PNG', 
+                            pageWidth/2 - 60, pageHeight/2 - 40, 
+                            120, 80);
+                        pdf.setGState(new pdf.GState({ opacity: 1 }));
+                    } catch (error) {
+                        console.error('Error adding logo watermark:', error);
+                    }
+                } else {
+                    // Company name text watermark
+                    pdf.setFontSize(60);
+                    pdf.setTextColor(248, 248, 248);
+                    pdf.setFont(undefined, 'bold');
+                    const watermarkText = companyName.substring(0, 20).toUpperCase();
+                    const watermarkWidth = pdf.getTextWidth(watermarkText);
+                    pdf.text(watermarkText, (pageWidth - watermarkWidth) / 2, pageHeight / 2, { 
+                        angle: 45,
+                        align: 'center'
+                    });
+                    pdf.setFont(undefined, 'normal');
+                }
             }
 
             // Generate letterhead based on template
@@ -1009,30 +1162,19 @@
                 pdf.text(website, marginLeft + contentWidth - pdf.getTextWidth(website), pageHeight - marginBottom - 3);
             }
 
-            // Add sample content area
-            pdf.setFontSize(11);
-            pdf.setTextColor(0, 0, 0);
-            const sampleText = [
-                'Dear [Recipient Name],',
-                '',
-                'This letterhead follows ISO 269 A4 paper standards with proper margins and professional layout.',
-                '',
-                'The design incorporates your company branding with consistent typography and color scheme.',
-                'All elements are positioned according to international business letterhead conventions.',
-                '',
-                'Best regards,',
-                companyName,
-                '',
-                'P.S. This PDF is print-ready and optimized for professional business communications.'
-            ];
-            
-            let contentY = marginTop + 60;
-            sampleText.forEach((line, index) => {
-                if (line) {
-                    pdf.text(line, marginLeft, contentY);
-                }
-                contentY += index === 0 ? 8 : 6;
-            });
+            // Add letter content
+            if (letterContent) {
+                pdf.setFontSize(11);
+                pdf.setTextColor(0, 0, 0);
+                const lines = letterContent.split('\n');
+                let contentY = marginTop + 60;
+                lines.forEach((line, index) => {
+                    if (line.trim()) {
+                        pdf.text(line, marginLeft, contentY);
+                    }
+                    contentY += index === 0 ? 8 : 6;
+                });
+            }
 
             // Save the PDF
             pdf.save(`${companyName.replace(/\s+/g, '-').toLowerCase()}-letterhead.pdf`);
@@ -1054,6 +1196,7 @@
             document.getElementById('logoInput').value = '';
             document.getElementById('showWatermark').checked = true;
             document.getElementById('showPageNumbers').checked = true;
+            document.getElementById('customLetterText').value = '';
             
             // Clear logo preview
             logoPreview.style.display = 'none';
@@ -1063,6 +1206,12 @@
             templateOptions.forEach(opt => opt.classList.remove('active'));
             templateOptions[0].classList.add('active');
             currentTemplate = 'modern';
+            
+            // Reset text option
+            textOptions.forEach(opt => opt.classList.remove('active'));
+            textOptions[0].classList.add('active');
+            currentTextOption = 'default';
+            customTextArea.style.display = 'none';
             
             // Clear preview
             letterheadPreview.innerHTML = '';
