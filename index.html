@@ -81,6 +81,18 @@
             font-size: 1rem;
         }
         
+        .required label::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .optional label::after {
+            content: " (optional)";
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 14px;
@@ -469,6 +481,10 @@
             color: #7f8c8d;
         }
         
+        #customTextArea {
+            margin-top: 15px;
+        }
+        
         @media (max-width: 1100px) {
             .content {
                 flex-direction: column;
@@ -519,44 +535,50 @@
                     <p>Paper size: A4 (210mm × 297mm) with proper margins and professional layout.</p>
                 </div>
                 
-                <div class="form-group">
+                <!-- Required Fields - Company Name and Slogan -->
+                <div class="form-group required">
                     <label for="companyNameInput">Company Name *</label>
                     <input type="text" id="companyNameInput" placeholder="Enter your company name">
                 </div>
                 
-                <div class="form-group">
-                    <label for="taglineInput">Company Tagline/Slogan</label>
+                <div class="form-group required">
+                    <label for="taglineInput">Company Tagline/Slogan *</label>
                     <input type="text" id="taglineInput" placeholder="Enter company tagline or slogan">
                 </div>
                 
-                <div class="form-group">
-                    <label for="addressInput">Business Address *</label>
-                    <textarea id="addressInput" placeholder="Enter complete business address"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phoneInput">Phone Number *</label>
-                    <input type="text" id="phoneInput" placeholder="Enter phone number">
-                </div>
-                
-                <div class="form-group">
-                    <label for="emailInput">Email Address *</label>
-                    <input type="text" id="emailInput" placeholder="Enter email address">
-                </div>
-                
-                <div class="form-group">
-                    <label for="websiteInput">Website URL</label>
-                    <input type="text" id="websiteInput" placeholder="Enter website URL">
-                </div>
-                
-                <div class="form-group">
-                    <label for="registrationInput">Registration/License Number</label>
-                    <input type="text" id="registrationInput" placeholder="Enter registration or license number">
-                </div>
-                
-                <div class="form-group">
-                    <label for="taxInput">Tax/VAT Number</label>
-                    <input type="text" id="taxInput" placeholder="Enter tax or VAT number">
+                <!-- Optional Fields - All other information -->
+                <div class="optional-section" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Additional Information (Optional)</h4>
+                    
+                    <div class="form-group optional">
+                        <label for="addressInput">Business Address</label>
+                        <textarea id="addressInput" placeholder="Enter complete business address (optional)"></textarea>
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="phoneInput">Phone Number</label>
+                        <input type="text" id="phoneInput" placeholder="Enter phone number (optional)">
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="emailInput">Email Address</label>
+                        <input type="text" id="emailInput" placeholder="Enter email address (optional)">
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="websiteInput">Website URL</label>
+                        <input type="text" id="websiteInput" placeholder="Enter website URL (optional)">
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="registrationInput">Registration/License Number</label>
+                        <input type="text" id="registrationInput" placeholder="Enter registration or license number (optional)">
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="taxInput">Tax/VAT Number</label>
+                        <input type="text" id="taxInput" placeholder="Enter tax or VAT number (optional)">
+                    </div>
                 </div>
                 
                 <!-- Custom Text Options -->
@@ -772,10 +794,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
         function updatePreview() {
             const companyName = document.getElementById('companyNameInput').value || 'Your Company Name';
             const tagline = document.getElementById('taglineInput').value || 'Your Company Tagline';
-            const address = document.getElementById('addressInput').value || 'Your Business Address\nCity, State, ZIP Code';
-            const phone = document.getElementById('phoneInput').value || '+1 (555) 123-4567';
-            const email = document.getElementById('emailInput').value || 'contact@company.com';
-            const website = document.getElementById('websiteInput').value || 'www.company.com';
+            const address = document.getElementById('addressInput').value || '';
+            const phone = document.getElementById('phoneInput').value || '';
+            const email = document.getElementById('emailInput').value || '';
+            const website = document.getElementById('websiteInput').value || '';
             const registration = document.getElementById('registrationInput').value;
             const tax = document.getElementById('taxInput').value;
             const primaryColor = document.getElementById('primaryColor').value;
@@ -799,18 +821,18 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 <div class="letterhead-company-info">
                                     <div class="letterhead-company-name" style="color: ${primaryColor};">${companyName}</div>
                                     <div class="letterhead-tagline">${tagline}</div>
-                                    <div class="letterhead-address">${address.replace(/\n/g, '<br>')}</div>
-                                    <div class="letterhead-contact">
-                                        <div class="letterhead-contact-item">${phone}</div>
-                                        <div class="letterhead-contact-item">${email}</div>
+                                    ${address ? `<div class="letterhead-address">${address.replace(/\n/g, '<br>')}</div>` : ''}
+                                    ${phone || email ? `<div class="letterhead-contact">
+                                        ${phone ? `<div class="letterhead-contact-item">${phone}</div>` : ''}
+                                        ${email ? `<div class="letterhead-contact-item">${email}</div>` : ''}
                                         ${website ? `<div class="letterhead-contact-item">${website}</div>` : ''}
-                                    </div>
+                                    </div>` : ''}
                                 </div>
                             </div>
                             <div class="letterhead-extra">
                                 ${registration ? `<div class="letterhead-extra-item">Reg: ${registration}</div>` : ''}
                                 ${tax ? `<div class="letterhead-extra-item">VAT: ${tax}</div>` : ''}
-                                <div class="letterhead-extra-item" style="color: ${secondaryColor};">${website}</div>
+                                ${website ? `<div class="letterhead-extra-item" style="color: ${secondaryColor};">${website}</div>` : ''}
                             </div>
                         </div>
                     `;
@@ -823,10 +845,10 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 ${companyLogo ? `<div class="letterhead-logo" style="margin: 0 auto 15px;"><img src="${companyLogo}" alt="Company Logo"></div>` : ''}
                                 <div class="letterhead-company-name" style="color: ${primaryColor}; font-size: 28px;">${companyName}</div>
                                 <div class="letterhead-tagline">${tagline}</div>
-                                <div style="margin-top: 20px; font-size: 12px; color: #34495e;">
-                                    <div>${address.replace(/\n/g, ' | ')}</div>
+                                ${address || phone || email ? `<div style="margin-top: 20px; font-size: 12px; color: #34495e;">
+                                    ${address ? `<div>${address.replace(/\n/g, ' | ')}</div>` : ''}
                                     <div style="margin-top: 8px;">
-                                        ${phone} | ${email}
+                                        ${phone ? `${phone}` : ''}${phone && email ? ' | ' : ''}${email ? `${email}` : ''}
                                         ${website ? ` | ${website}` : ''}
                                     </div>
                                     ${registration || tax ? `<div style="margin-top: 8px; color: ${secondaryColor};">
@@ -834,7 +856,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                         ${registration && tax ? ' | ' : ''}
                                         ${tax ? `VAT: ${tax}` : ''}
                                     </div>` : ''}
-                                </div>
+                                </div>` : ''}
                             </div>
                         </div>
                     `;
@@ -853,19 +875,19 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                                 </div>
                             </div>
                         </div>
-                        <div style="padding: 15px 30px; background: ${primaryColor}08; border-bottom: 1px solid ${primaryColor}20;">
+                        ${address || phone || email || website ? `<div style="padding: 15px 30px; background: ${primaryColor}08; border-bottom: 1px solid ${primaryColor}20;">
                             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #34495e;">
                                 <div>
-                                    <div>${address.replace(/\n/g, ' | ')}</div>
-                                    <div style="margin-top: 5px;">${phone} | ${email}</div>
+                                    ${address ? `<div>${address.replace(/\n/g, ' | ')}</div>` : ''}
+                                    ${phone || email ? `<div style="margin-top: 5px;">${phone ? `${phone}` : ''}${phone && email ? ' | ' : ''}${email ? `${email}` : ''}</div>` : ''}
                                 </div>
                                 <div style="text-align: right;">
-                                    <div>${website}</div>
+                                    ${website ? `<div>${website}</div>` : ''}
                                     ${registration ? `<div style="margin-top: 5px;">Reg: ${registration}</div>` : ''}
                                     ${tax ? `<div style="margin-top: 5px;">VAT: ${tax}</div>` : ''}
                                 </div>
                             </div>
-                        </div>
+                        </div>` : ''}
                     `;
                     break;
             }
@@ -909,7 +931,7 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         ${showPageNumbers ? 'Page 1 of 1' : ''}
                     </div>
                     <div class="letterhead-footer-website" style="color: ${secondaryColor};">
-                        ${website}
+                        ${website || 'www.yourcompany.com'}
                     </div>
                 </div>
             `;
@@ -934,8 +956,9 @@ P.S. This PDF is print-ready and optimized for professional business communicati
             const showPageNumbers = document.getElementById('showPageNumbers').checked;
             const letterContent = getLetterContent();
 
-            if (!companyName || !address || !phone || !email) {
-                status.textContent = 'Please fill in all required fields (Company Name, Address, Phone, Email).';
+            // Check only required fields
+            if (!companyName || !tagline) {
+                status.textContent = 'Please fill in Company Name and Tagline (required fields).';
                 return;
             }
 
@@ -1028,27 +1051,45 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.text(companyName, marginLeft + (companyLogo ? 30 : 0), marginTop + 5);
                     pdf.setFont(undefined, 'normal');
                     
-                    if (tagline) {
-                        pdf.setFontSize(10);
-                        pdf.setTextColor(100, 100, 100);
-                        pdf.text(tagline, marginLeft + (companyLogo ? 30 : 0), marginTop + 10);
+                    pdf.setFontSize(11);
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.text(tagline, marginLeft + (companyLogo ? 30 : 0), marginTop + 10);
+                    
+                    // Optional fields
+                    if (address) {
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(50, 50, 50);
+                        let contactY = marginTop + 18;
+                        const addressLines = pdf.splitTextToSize(address, contentWidth - 100);
+                        addressLines.forEach(line => {
+                            pdf.text(line, marginLeft + (companyLogo ? 30 : 0), contactY);
+                            contactY += 4;
+                        });
                     }
                     
-                    // Address and contact
-                    pdf.setFontSize(9);
-                    pdf.setTextColor(50, 50, 50);
-                    let contactY = marginTop + 18;
-                    const addressLines = pdf.splitTextToSize(address, contentWidth - 100);
-                    addressLines.forEach(line => {
-                        pdf.text(line, marginLeft + (companyLogo ? 30 : 0), contactY);
-                        contactY += 4;
-                    });
+                    if (phone) {
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(50, 50, 50);
+                        let phoneY = address ? marginTop + 18 + (address.split('\n').length * 4) + 2 : marginTop + 18;
+                        pdf.text(phone, marginLeft + (companyLogo ? 30 : 0), phoneY);
+                    }
                     
-                    pdf.text(phone, marginLeft + (companyLogo ? 30 : 0), contactY + 2);
-                    pdf.text(email, marginLeft + (companyLogo ? 30 : 0), contactY + 6);
-                    if (website) pdf.text(website, marginLeft + (companyLogo ? 30 : 0), contactY + 10);
+                    if (email) {
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(50, 50, 50);
+                        let emailY = marginTop + (address ? 18 + (address.split('\n').length * 4) + (phone ? 6 : 2) : 18);
+                        if (phone) emailY += 4;
+                        pdf.text(email, marginLeft + (companyLogo ? 30 : 0), emailY);
+                    }
                     
-                    // Right side info
+                    if (website) {
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(50, 50, 50);
+                        let websiteY = marginTop + 18 + (address ? (address.split('\n').length * 4) : 0) + (phone ? 4 : 0) + (email ? 4 : 0);
+                        pdf.text(website, marginLeft + (companyLogo ? 30 : 0), websiteY);
+                    }
+                    
+                    // Right side info (optional)
                     const rightX = marginLeft + contentWidth - 50;
                     pdf.setFontSize(8);
                     if (registration) pdf.text(`Reg: ${registration}`, rightX, marginTop + 5);
@@ -1082,28 +1123,37 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.text(companyName, centerX - companyWidth / 2, marginTop + 25);
                     pdf.setFont(undefined, 'normal');
                     
-                    if (tagline) {
-                        pdf.setFontSize(10);
-                        pdf.setTextColor(100, 100, 100);
-                        const taglineWidth = pdf.getTextWidth(tagline);
-                        pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
-                    }
+                    pdf.setFontSize(11);
+                    pdf.setTextColor(100, 100, 100);
+                    const taglineWidth = pdf.getTextWidth(tagline);
+                    pdf.text(tagline, centerX - taglineWidth / 2, marginTop + 30);
                     
-                    // Contact info
-                    pdf.setFontSize(9);
-                    pdf.setTextColor(50, 50, 50);
-                    const addressWidth = pdf.getTextWidth(address.replace(/\n/g, ' | '));
-                    pdf.text(address.replace(/\n/g, ' | '), centerX - addressWidth / 2, marginTop + 40);
-                    
-                    const contactText = `${phone} | ${email}${website ? ` | ${website}` : ''}`;
-                    const contactWidth = pdf.getTextWidth(contactText);
-                    pdf.text(contactText, centerX - contactWidth / 2, marginTop + 45);
-                    
-                    if (registration || tax) {
-                        const regText = `${registration ? `Reg: ${registration}` : ''}${registration && tax ? ' | ' : ''}${tax ? `VAT: ${tax}` : ''}`;
-                        const regWidth = pdf.getTextWidth(regText);
-                        pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
-                        pdf.text(regText, centerX - regWidth / 2, marginTop + 50);
+                    // Optional contact info
+                    if (address || phone || email) {
+                        pdf.setFontSize(9);
+                        pdf.setTextColor(50, 50, 50);
+                        let infoY = marginTop + 40;
+                        
+                        if (address) {
+                            const addressWidth = pdf.getTextWidth(address.replace(/\n/g, ' | '));
+                            pdf.text(address.replace(/\n/g, ' | '), centerX - addressWidth / 2, infoY);
+                            infoY += 5;
+                        }
+                        
+                        const contactText = `${phone ? phone : ''}${phone && email ? ' | ' : ''}${email ? email : ''}${(phone || email) && website ? ` | ${website}` : ''}`;
+                        if (contactText.trim()) {
+                            const contactWidth = pdf.getTextWidth(contactText);
+                            pdf.text(contactText, centerX - contactWidth / 2, infoY);
+                        }
+                        
+                        if (registration || tax) {
+                            const regText = `${registration ? `Reg: ${registration}` : ''}${registration && tax ? ' | ' : ''}${tax ? `VAT: ${tax}` : ''}`;
+                            if (regText.trim()) {
+                                const regWidth = pdf.getTextWidth(regText);
+                                pdf.setTextColor(secondaryCMYK.c * 255, secondaryCMYK.m * 255, secondaryCMYK.y * 255, secondaryCMYK.k * 255);
+                                pdf.text(regText, centerX - regWidth / 2, infoY + 5);
+                            }
+                        }
                     }
                     break;
                     
@@ -1119,10 +1169,8 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                     pdf.text(companyName, marginLeft, marginTop - 2);
                     pdf.setFont(undefined, 'normal');
                     
-                    if (tagline) {
-                        pdf.setFontSize(9);
-                        pdf.text(tagline, marginLeft, marginTop + 3);
-                    }
+                    pdf.setFontSize(11);
+                    pdf.text(tagline, marginLeft, marginTop + 3);
                     
                     // Logo in header
                     if (companyLogo) {
@@ -1133,14 +1181,24 @@ P.S. This PDF is print-ready and optimized for professional business communicati
                         }
                     }
                     
-                    // Secondary info bar
+                    // Secondary info bar (with optional info)
                     pdf.setFillColor(secondaryCMYK.c * 50, secondaryCMYK.m * 50, secondaryCMYK.y * 50, secondaryCMYK.k * 50);
                     pdf.rect(marginLeft, marginTop + 12, contentWidth, 12, 'F');
                     
                     pdf.setFontSize(8);
                     pdf.setTextColor(50, 50, 50);
-                    pdf.text(address.replace(/\n/g, ' | '), marginLeft, marginTop + 17);
-                    pdf.text(`${phone} | ${email}`, marginLeft, marginTop + 21);
+                    
+                    let leftInfoY = marginTop + 17;
+                    if (address) {
+                        pdf.text(address.replace(/\n/g, ' | '), marginLeft, leftInfoY);
+                        leftInfoY += 4;
+                    }
+                    if (phone || email) {
+                        const contactText = `${phone ? phone : ''}${phone && email ? ' | ' : ''}${email ? email : ''}`;
+                        if (contactText.trim()) {
+                            pdf.text(contactText, marginLeft, leftInfoY);
+                        }
+                    }
                     
                     const rightInfoX = marginLeft + contentWidth - 60;
                     if (website) pdf.text(website, rightInfoX, marginTop + 17);
